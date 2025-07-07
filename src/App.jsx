@@ -60,14 +60,14 @@ function App() {
       {loading ? (
         <Loader />
       ) : error ? (
-        <div className="text-white d-flex justify-content-center">
+        <div className="text-white d-flex justify-content-center" card-wrapper>
           <div className="text-center weather-card">
             <img src={notFound} className="error-img" alt="Weather icon" />
             <h1 className="error-info">{error}</h1>
           </div>
         </div>
       ) : weather ? (
-        <div className="text-white d-flex justify-content-center">
+        <div className="text-white d-flex justify-content-center card-wrapper">
           <div className="text-center weather-card">
             <img src={cloud} className="weather-img" alt="Weather icon" />
             <h1 className="weather-temp">{weather.main.temp}°C</h1>
