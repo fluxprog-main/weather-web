@@ -54,7 +54,10 @@
     .form-wrapper {
         margin-top: -30px !important;
     }
-    .card-wrapper {
-        padding: 0 100px !important;
+
+    body {
+        overflow: hidden !important;
+        background-color: #001331 !important;
+        box-shadow: none;
     }
 }
