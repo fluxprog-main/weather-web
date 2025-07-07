@@ -49,3 +49,9 @@
     padding: 0 50px 35px;
     width: 500px;
 }
+
+@media only screen and (max-width: 768px) {
+    .form-wrapper {
+        margin-top: -30px !important;
+    }
+}
