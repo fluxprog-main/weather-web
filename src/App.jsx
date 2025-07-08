@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Loader from "./Loader";
 
@@ -12,6 +12,30 @@ function App() {
   const [city, setCity] = useState("");
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    startingWeather();
+  }, []);
+
+  async function startingWeather() {
+    try {
+      setLoading(true);
+      const londonWeather = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?q=London&appid=${
+          import.meta.env.VITE_OPENWEATHER_API_KEY
+        }&units=metric&lang=uz`
+      );
+      setWeather(londonWeather.data);
+    } catch (err) {
+      if (err.response && err.response.status === 404) {
+        setError("City not found");
+      } else {
+        setError("Something went wrong");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function fetchWeather(e) {
     e.preventDefault();
     setWeather(null);
@@ -21,13 +45,11 @@ function App() {
 
     try {
       setLoading(true);
-
       const res = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${
           import.meta.env.VITE_OPENWEATHER_API_KEY
         }&units=metric&lang=uz`
       );
-
       setWeather(res.data);
     } catch (err) {
       if (err.response && err.response.status === 404) {
@@ -60,7 +82,7 @@ function App() {
       {loading ? (
         <Loader />
       ) : error ? (
-        <div className="text-white d-flex justify-content-center card-wrapper" >
+        <div className="text-white d-flex justify-content-center card-wrapper">
           <div className="text-center weather-card">
             <img src={notFound} className="error-img" alt="Weather icon" />
             <h1 className="error-info">{error}</h1>
@@ -70,6 +92,9 @@ function App() {
         <div className="text-white d-flex justify-content-center card-wrapper">
           <div className="text-center weather-card">
             <img src={cloud} className="weather-img" alt="Weather icon" />
+            <h1 className="weather-ctiy" style={{ fontSize: "50px" }}>
+              {weather.name}
+            </h1>
             <h1 className="weather-temp">{weather.main.temp}°C</h1>
             <p className="weather-desc">{weather.weather[0].description}</p>
             <div className="weather-box d-flex justify-content-between">
